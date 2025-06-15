@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>frequency-network-demo.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p>Author: Dianzhe Ding
+Email: dingdianzhe@mail.ioa.ac.cn</p>
+<h2 id="introduction">Introduction</h2>
+<p>We present some speech samples in the website to show the proposed frequency bandwidth extension network. Objective and subjective evaluations on A4BS dataset show that our system substantially outperforms existing bone-conducted speech enhancement systems.</p>
+<h2 id="samples">Samples</h2>
+<p>We encourage our readers to listen to the following audio samples in order to experience the audio quality of our enhanced speech. Due to the large number of audio files, the loading time might be prolonged. Kindly wait for a moment or consider closing other web pages and refreshing the website to improve the loading speed.</p>
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample1</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_1/ac_1.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_1/bc_1.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_1/eben_1.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_1/dpt_1.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_1/wavenet_1.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_1/unet_1.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_1/stft_1.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample2</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_2/ac_2.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_2/bc_2.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_2/eben_2.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_2/dpt_2.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_2/wavenet_2.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_2/unet_2.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_2/stft_2.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+<!-- more -->
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample3</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_3/ac_3.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_3/bc_3.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_3/eben_3.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_3/dpt_3.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_3/wavenet_3.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_3/unet_3.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_3/stft_3.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample4</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_4/ac_4.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_4/bc_4.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_4/eben_4.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_4/dpt_4.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_4/wavenet_4.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_4/unet_4.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_4/stft_4.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample5</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_5/ac_5.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_5/bc_5.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_5/eben_5.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_5/dpt_5.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_5/wavenet_5.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_5/unet_5.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_5/stft_5.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample6</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_6/ac_6.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_6/bc_6.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_6/eben_6.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_6/dpt_6.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_6/wavenet_6.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_6/unet_6.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_6/stft_6.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample7</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_7/ac_7.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_7/bc_7.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_7/eben_7.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_7/dpt_7.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_7/wavenet_7.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_7/unet_7.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_7/stft_7.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample8</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_8/ac_8.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_8/bc_8.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_8/eben_8.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_8/dpt_8.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_8/wavenet_8.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_8/unet_8.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_8/stft_8.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample9</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_9/ac_9.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_9/bc_9.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_9/eben_9.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_9/dpt_9.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_9/wavenet_9.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_9/unet_9.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_9/stft_9.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample10</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_10/ac_10.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_10/bc_10.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_10/eben_10.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_10/dpt_10.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_10/wavenet_10.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_10/unet_10.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_10/stft_10.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample11</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_11/ac_11.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_11/bc_11.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_11/eben_11.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_11/dpt_11.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_11/wavenet_11.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_11/unet_11.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_11/stft_11.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample12</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_12/ac_12.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_12/bc_12.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_12/eben_12.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_12/dpt_12.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_12/wavenet_12.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_12/unet_12.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_12/stft_12.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample13</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_13/ac_13.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_13/bc_13.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_13/eben_13.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_13/dpt_13.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_13/wavenet_13.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_13/unet_13.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_13/stft_13.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample14</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_14/ac_14.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_14/bc_14.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_14/eben_14.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_14/dpt_14.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_14/wavenet_14.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_14/unet_14.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_14/stft_14.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample15</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_15/ac_15.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_15/bc_15.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_15/eben_15.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_15/dpt_15.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_15/wavenet_15.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_15/unet_15.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_15/stft_15.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample16</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_16/ac_16.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_16/bc_16.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_16/eben_16.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_16/dpt_16.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_16/wavenet_16.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_16/unet_16.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_16/stft_16.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample17</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_17/ac_17.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_17/bc_17.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_17/eben_17.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_17/dpt_17.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_17/wavenet_17.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_17/unet_17.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_17/stft_17.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+<table>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>Sample18</td>
+      <td> AC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_18/ac_18.wav" controls></td>
+      <td> BC <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_18/bc_18.wav" controls></td>
+      <td> EBEN <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_18/eben_18.wav" controls></td>
+      <td> DPT-EGNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_18/dpt_18.wav" controls></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td> WaveNet <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_18/wavenet_18.wav" controls></td>
+      <td> Two Stage Approach <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_18/unet_18.wav" controls></td>
+      <td> Proposed Network <audio src="https://github.com/dianzheding/samples/raw/refs/heads/main/RAW/speaker_18/stft_18.wav" controls></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <colgroup>
+  </colgroup>
+</table>
+
+</body>
+</html>
